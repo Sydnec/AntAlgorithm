@@ -1,4 +1,3 @@
-// Model
 class Model {
     constructor() {
       this.seconds = 0;

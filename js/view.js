@@ -1,29 +1,32 @@
-let isRunning = false;
-let seconds = 0;
-let minutes = 0;
-let timerInterval;
-const timerElement = document.getElementById('timer');
-const toggleButton = document.getElementById('startstopButton');
-
-function updateTimer() {
-    seconds++;
-
-    const formattedTime = padNumber(minutes) + ':' + padNumber(seconds);
-    timerElement.textContent = formattedTime;
-}
-
-function padNumber(num) {
-    return num.toString().padStart(2, '0');
-}
-
-toggleButton.addEventListener('click', function () {
-    if (isRunning) {
-        clearInterval(timerInterval);
-        toggleButton.textContent = 'Start';
-    } else {
-        timerInterval = setInterval(updateTimer, 1000);
-        toggleButton.textContent = 'Stop';
+// View
+class View {
+    constructor() {
+        this.timerElement = document.getElementById('timer');
+        this.toggleButton = document.getElementById('startstopButton');
+        this.toggleButton.addEventListener('click', this.toggleTimer.bind(this));
     }
 
-    isRunning = !isRunning;
-});
+    updateTimer() { // Ajoute une seconde et change l'affichage
+        model.setSeconds(model.getSeconds() + 1);
+        const formattedTime = this.formatTime(model.getSeconds());
+        this.timerElement.textContent = formattedTime;
+    }
+
+    formatTime(seconds) { // Affichage au format 00:00
+        return Math.floor(seconds / 60).toString().padStart(2, '0') + ":" + (seconds % 60).toString().padStart(2, '0');
+    }
+
+    toggleTimer() {
+        if (model.getIsRunning()) { // Pause
+            clearInterval(model.getTimerInterval());
+            this.toggleButton.textContent = 'Start';
+        } else { // Reprise
+            model.setTimerInterval(setInterval(this.updateTimer.bind(this), 1000));
+            this.toggleButton.textContent = 'Stop';
+        }
+
+        model.setIsRunning(!model.getIsRunning());
+    }
+}
+
+const view = new View();

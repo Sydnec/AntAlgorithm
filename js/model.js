@@ -1,8 +1,35 @@
 // Model
 class Model {
     constructor() {
-        this.data = []; // Your model data goes here
+      this.seconds = 0;
+      this.isRunning = false;
+      this.timerInterval = null;
     }
-
-    // Model methods
-}
+  
+    getSeconds() {
+      return this.seconds;
+    }
+  
+    setSeconds(value) {
+      this.seconds = value;
+    }
+  
+    getIsRunning() {
+      return this.isRunning;
+    }
+  
+    setIsRunning(value) {
+      this.isRunning = value;
+    }
+  
+    getTimerInterval() {
+      return this.timerInterval;
+    }
+  
+    setTimerInterval(value) {
+      this.timerInterval = value;
+    }
+  }
+  
+  const model = new Model();
+  

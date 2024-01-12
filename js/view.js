@@ -20,9 +20,11 @@ class View {
         if (model.getIsRunning()) { // Pause
             clearInterval(model.getTimerInterval());
             this.toggleButton.textContent = 'Start';
+            this.toggleButton.style.backgroundColor = '#4caf50'; // Vert
         } else { // Reprise
             model.setTimerInterval(setInterval(this.updateTimer.bind(this), 1000));
             this.toggleButton.textContent = 'Stop';
+            this.toggleButton.style.backgroundColor = '#d70000'; // Rouge
         }
 
         model.setIsRunning(!model.getIsRunning());

@@ -26,5 +26,4 @@ toggleButton.addEventListener('click', function () {
     }
 
     isRunning = !isRunning;
-    resetButton.disabled = isRunning;
 });

@@ -4,5 +4,7 @@ class Cell {
         this.y = y;
     }
 
-    getType() { return this.constructor.name; }
+    getType() {
+        return this.constructor.name;
+    }
 }

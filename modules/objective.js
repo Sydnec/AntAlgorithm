@@ -4,7 +4,7 @@ class Objective extends Cell {
         this._qty = qty;
     }
 
-    getQty() { 
+    getQty() {
         return this._qty;
     }
 

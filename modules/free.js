@@ -4,6 +4,11 @@ class Free extends Cell {
         this._qty = qty;
     }
 
-    getQty() { return this._qty;  }
-    setQty(newValue) { this._qty = newValue; }
+    getQty() {
+        return this._qty;
+    }
+
+    setQty(newValue) {
+        this._qty = newValue;
+    }
 }

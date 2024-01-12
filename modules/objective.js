@@ -4,6 +4,11 @@ class Objective extends Cell {
         this._qty = qty;
     }
 
-    GetQty() { return this._qty; }
-    SetQty(newValue) { this._qty = newValue; }
+    getQty() { 
+        return this._qty;
+    }
+
+    setQty(newValue) {
+        this._qty = newValue;
+    }
 }

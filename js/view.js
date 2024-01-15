@@ -1,34 +1,16 @@
-// View
 class View {
-    constructor() {
-        this.timerElement = document.getElementById('timer');
-        this.toggleButton = document.getElementById('startstopButton');
-        this.toggleButton.addEventListener('click', this.toggleTimer.bind(this));
+    constructor(controller) {
+        this.controller = controller;
+        this.toggleButton = document.getElementById('toggleButton');
+        toggleButton.addEventListener('click', () => this.controller.toggle());
     }
-
-    updateTimer() { // Ajoute une seconde et change l'affichage
-        model.setSeconds(model.getSeconds() + 1);
-        const formattedTime = this.formatTime(model.getSeconds());
-        this.timerElement.textContent = formattedTime;
+    
+    displayStartButton(){
+        this.toggleButton.textContent = 'Start';
+        this.toggleButton.style.backgroundColor = "#4caf50"
     }
-
-    formatTime(seconds) { // Affichage au format 00:00
-        return Math.floor(seconds / 60).toString().padStart(2, '0') + ":" + (seconds % 60).toString().padStart(2, '0');
-    }
-
-    toggleTimer() {
-        if (model.getIsRunning()) { // Pause
-            clearInterval(model.getTimerInterval());
-            this.toggleButton.textContent = 'Start';
-            this.toggleButton.style.backgroundColor = '#4caf50'; // Vert
-        } else { // Reprise
-            model.setTimerInterval(setInterval(this.updateTimer.bind(this), 1000));
-            this.toggleButton.textContent = 'Stop';
-            this.toggleButton.style.backgroundColor = '#d70000'; // Rouge
-        }
-
-        model.setIsRunning(!model.getIsRunning());
+    displayStopButton(){
+        this.toggleButton.textContent = 'Stop';
+        this.toggleButton.style.backgroundColor = "#d70000"
     }
 }
-
-const view = new View();

@@ -2,7 +2,7 @@ class Controller {
 	constructor(model, view) {
 		this.model = model;
 		this.view = view;
-
+		this.cellSize = 16;
 		this.view.toggleButton.addEventListener('click', () => this.toggle());
 		window.addEventListener(
 			'keydown',
@@ -14,11 +14,22 @@ class Controller {
 			true
 		);
 
-this.myMaze = new Maze(9,9);
-// let cellSize = 100;
+		this.myMaze = new Maze(9,9);
+		
+		this.canvas = document.getElementById('gridCanvas')
+		const ctx = this.canvas.getContext('2d');
 
-// const canvas = document.getElementById('gridCanvas');
-// const ctx = canvas.getContext('2d');
+		for (let x = 0; x < this.myMaze.height; x++) {
+			for (let y = 0; y < this.myMaze.width; y++) {
+				const cellType = this.myMaze.cells[x][y].getType();
+				const img = new Image();
+				img.src = `images/${cellType.toLowerCase()}.png`;
+
+				img.onload = () => {
+					ctx.drawImage(img, y * this.cellSize, x * this.cellSize, this.cellSize, this.cellSize);
+				};
+			}
+		}
 	}
 
 	toggle() {

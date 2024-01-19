@@ -5,8 +5,6 @@ class Model {
 		this.intervalId = null;
 		this.isRunning = false;
 		this.startTime = null;
-
-		// let _grid = new Labyrinth(7, 7);
 	}
 
 	startChrono() {

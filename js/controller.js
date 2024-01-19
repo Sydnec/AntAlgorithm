@@ -4,6 +4,11 @@ class Controller {
         this.view = view;
 
         this.view.toggleButton.addEventListener('click', () => this.toggle());
+        window.addEventListener("keydown", (event, button = this.view.toggleButton) => {
+            if (event.key === ' ') {
+                button.click();
+            }
+          }, true);
     }
 
     toggle() {

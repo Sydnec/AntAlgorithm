@@ -3,8 +3,10 @@ class Maze {
 		this.width = width;
 		this.height = height;
 		this.cells = [];
-		this.minObjective = 1;
-		this.maxObjective = 3
+		this.luckOfFreeCell = 1;
+		this.numberOfObjective = 1 + Math.round(Math.random() * 3)
+
+		console.log(this.numberOfObjective)
 
 		this.directions = [
 			[1, 0],
@@ -13,7 +15,39 @@ class Maze {
 			[0, -1],
 		];
 
-		this.initializeMaze();
+		this.generateMaze();
+		this.fillWithObstacle()
+		this.addObjectives()
+	}
+
+	generateMaze() {
+		for (let x = 0; x < this.height; x++) {
+			let row = [];
+			for (let y = 0; y < this.width; y++) {
+				row.push(null);
+			}
+			this.cells.push(row);
+		}
+		// Génère les coordonnées du point de départ
+		// Il ne peut pas se retrouver sur un bord
+		const startX = 1 + Math.floor(Math.random() * (this.width - 2));
+		const startY = 1 + Math.floor(Math.random() * (this.height - 2));
+		const startCell = new Start(startX, startY);
+
+		this.cells[startX][startY] = startCell;
+		for (const [dx, dy] of this.directions) {
+			const newX = startCell.x + dx;
+			const newY = startCell.y + dy;
+
+			if(this.isValidPosition(newX, newY)){
+				const newCell = new Free(newX, newY);
+				this.cells[newX][newY] = newCell;
+				this.createMazeRecursive(newCell);
+			}
+		}
+	}
+
+	fillWithObstacle(){
 		for (let x = 0; x < this.height; x++) {
 			for (let y = 0; y < this.width; y++) {
 				if (this.cells[x][y] === null) {
@@ -23,33 +57,14 @@ class Maze {
 		}
 	}
 
-	initializeMaze() {
-		for (let x = 0; x < this.height; x++) {
-			let row = [];
-			for (let y = 0; y < this.width; y++) {
-				row.push(null);
-			}
-			this.cells.push(row);
-		}
-		this.generateMaze();
-	}
-
-	generateMaze() {
-		const startX = Math.floor(Math.random() * this.height);
-		const startY = Math.floor(Math.random() * this.width);
-
-		let newCell
-
-		const startCell = new Start(startX, startY);
-		this.cells[startX][startY] = startCell;
-		for (const [dx, dy] of this.directions) {
-			const newX = startCell.x + dx;
-			const newY = startCell.y + dy;
-
-			if(this.isValidPosition(newX, newY)){
-				newCell = new Free(newX, newY);
-				this.cells[newX][newY] = newCell;
-				this.createMazeRecursive(newCell);
+	addObjectives() {
+		while (this.numberOfObjective > 0) {
+			let cellX = Math.floor(Math.random() * this.width);
+			let cellY = Math.floor(Math.random() * this.height);
+	
+			if (this.cells[cellX][cellY].getType() === "Free") {
+				this.cells[cellX][cellY] = new Objective(cellX, cellY);
+				this.numberOfObjective -= 1;
 			}
 		}
 	}
@@ -62,13 +77,15 @@ class Maze {
 			if (this.isValidPosition(newX, newY) && !this.cells[newX][newY]) {
 				const random = Math.random();
 				let newCell;
-				if (random < 0.3) {
-					newCell = new Obstacle(newX, newY);
-					this.cells[newX][newY] = newCell;
-				} else {
+				if (random < this.luckOfFreeCell) {
 					newCell = new Free(newX, newY);
+					this.luckOfFreeCell -= 0.5/(this.width * this.height)
 					this.cells[newX][newY] = newCell;
 					this.createMazeRecursive(newCell);
+				} else {
+					this.luckOfFreeCell += 0.25/(this.width * this.height)
+					newCell = new Obstacle(newX, newY);
+					this.cells[newX][newY] = newCell;
 				}
 			}
 		}

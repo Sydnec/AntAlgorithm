@@ -1,4 +1,4 @@
-import { Maze } from "../modules/Maze.js";
+import { Maze } from '../modules/Maze.js';
 
 export class Model {
 	constructor() {

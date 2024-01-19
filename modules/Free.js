@@ -1,4 +1,4 @@
-import { Cell } from "./Cell.js";
+import { Cell } from './Cell.js';
 
 export class Free extends Cell {
 	constructor(x, y, qty = 0) {

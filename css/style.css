@@ -39,7 +39,6 @@ button {
 	cursor: pointer;
 }
 
-
 #canvas {
 	width: min(60vw, 100vh);
 	height: min(60vw, 100vh);

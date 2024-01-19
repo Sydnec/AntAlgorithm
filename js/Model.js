@@ -8,7 +8,7 @@ export class Model {
 		this.isRunning = false;
 		this.startTime = null;
 
-		this.myMaze = new Maze(15,15);
+		this.myMaze = new Maze(25,25);
 	}
 
 	startChrono() {

@@ -4,12 +4,11 @@ import { Objective } from "./Objective.js";
 import { Start } from "./Start.js";
 
 export class Maze {
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
+  constructor(cellsBySide) {
+    this.cellsBySide = cellsBySide;
     this.cells = [];
     this.luckOfFreeCell = 1;
-    this.numberOfObjective = 1 + Math.round(Math.random() * (Math.max(this.width, this.height)/10));
+    this.numberOfObjective = 1 + Math.round(Math.random() * (cellsBySide/10));
     this.directions = [
       [1, 0],
       [-1, 0],
@@ -23,22 +22,25 @@ export class Maze {
   }
 
   generateMaze() {
-    for (let x = 0; x < this.height; x++) {
+    // Créer un tableau de this.cellsBySide² cases initialisée à null
+    for (let x = 0; x < this.cellsBySide ; x++) {
       let row = [];
-      for (let y = 0; y < this.width; y++) {
+      for (let y = 0; y < this.cellsBySide ; y++) {
         row.push(null);
       }
       this.cells.push(row);
     }
+
     // Génère les coordonnées du point de départ
     const startX = Math.floor(
-      this.width / 3 + (Math.random() * this.width) / 3
+      this.cellsBySide  / 3 + (Math.random() * this.cellsBySide ) / 3
     );
     const startY = Math.floor(
-      this.height / 3 + (Math.random() * this.height) / 3
+      this.cellsBySide  / 3 + (Math.random() * this.cellsBySide ) / 3
     );
     const startCell = new Start(startX, startY);
-    // Part du point de départ pour générer le chemin libre
+
+    // Part du point de départ pour générer le chemin libre de manière récursive
     this.cells[startX][startY] = startCell;
     for (const [dx, dy] of this.directions) {
       const newX = startCell.x + dx;
@@ -49,21 +51,12 @@ export class Maze {
     }
   }
 
-  fillWithObstacle() {
-    for (let x = 0; x < this.height; x++) {
-      for (let y = 0; y < this.width; y++) {
-        if (this.cells[x][y] === null) {
-          this.cells[x][y] = new Obstacle(x, y);
-        }
-      }
-    }
-  }
-
+  // Génère des objectifs sur des cases Free est situé sur l'intervale [0; 1/3]U[2/3; 1] * 
   addObjectives() {
+    
     while (this.numberOfObjective > 0) {
-      let cellX = Math.floor(Math.random() * this.width);
-      let cellY = Math.floor(Math.random() * this.height);
-
+      let cellX = (Math.random() < 0.5) ? Math.floor(Math.random() * 1/3 * this.cellsBySide ) : Math.floor((2/3 * this.cellsBySide ) + Math.random() * 1/3 * this.cellsBySide );
+      let cellY = (Math.random() < 0.5) ? Math.floor(Math.random() * 1/3 * this.cellsBySide ) : Math.floor((2/3 * this.cellsBySide ) + Math.random() * 1/3 * this.cellsBySide );
       if (this.cells[cellX][cellY].getType() === "Free") {
         this.cells[cellX][cellY] = new Objective(cellX, cellY);
         this.numberOfObjective -= 1;
@@ -71,16 +64,19 @@ export class Maze {
     }
   }
 
+  // Génère des obstacles si c'est un contour
+  // sinon génère aléatoirement une case Free ou un obstacle
+  // avec des probabilités évolutives
   createMazeRecursive(currentCell) {
+   
     for (const [dx, dy] of this.directions) {
       const newX = currentCell.x + dx;
       const newY = currentCell.y + dy;
       let newCell;
-      // Génère des obstacles sur le contour
       if (
-        newX === this.width - 1 ||
+        newX === this.cellsBySide - 1 ||
         newX === 0 ||
-        newY === this.height - 1 ||
+        newY === this.cellsBySide - 1 ||
         newY === 0
       ) {
         newCell = new Obstacle(newX, newY);
@@ -101,6 +97,18 @@ export class Maze {
     }
   }
 
+  // Rempli d'obstacles les zones restantes
+  fillWithObstacle() {
+    for (let x = 0; x < this.cellsBySide ; x++) {
+      for (let y = 0; y < this.cellsBySide ; y++) {
+        if (this.cells[x][y] === null) {
+          this.cells[x][y] = new Obstacle(x, y);
+        }
+      }
+    }
+  }
+
+  // Récupère les cases voisines pas encore générées
   getUnvisitedNeighbors(cell) {
     const neighbors = [];
 
@@ -116,7 +124,8 @@ export class Maze {
     return neighbors;
   }
 
+  // Vérifie que la position soit valide
   isValidPosition(x, y) {
-    return x >= 0 && x < this.height && y >= 0 && y < this.width;
+    return x >= 0 && x < this.cellsBySide  && y >= 0 && y < this.cellsBySide ;
   }
 }

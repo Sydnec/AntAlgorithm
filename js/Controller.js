@@ -46,6 +46,7 @@ class Controller {
       this.model.intervalId = setInterval(() => {
         this.model.tick();
         this.view.updateTimer(this.model.ms);
+        this.view.renderMaze(this.model.myMaze);
       }, 1000 / this.model.fps);
       this.view.displayStopButton();
     }

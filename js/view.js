@@ -2,6 +2,7 @@ class View {
 	constructor() {
 		this.toggleButton = document.getElementById('toggleButton');
 		this.timerElement = document.getElementById('timer');
+		this.canvas = document.getElementById('gridCanvas')
 	}
 
 	updateTimer(ms) {

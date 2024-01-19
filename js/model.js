@@ -6,7 +6,7 @@ class Model {
 		this.isRunning = false;
 		this.startTime = null;
 
-		let _grid = new Labyrinth(7, 7);
+		// let _grid = new Labyrinth(7, 7);
 	}
 
 	startChrono() {

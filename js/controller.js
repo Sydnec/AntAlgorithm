@@ -13,6 +13,12 @@ class Controller {
 			},
 			true
 		);
+
+this.myMaze = new Maze(9,9);
+// let cellSize = 100;
+
+// const canvas = document.getElementById('gridCanvas');
+// const ctx = canvas.getContext('2d');
 	}
 
 	toggle() {
@@ -31,5 +37,4 @@ class Controller {
 		}
 	}
 }
-
 const app = new Controller(new Model(), new View());

@@ -1,25 +1,34 @@
 class Model {
     constructor() {
         this.ms = 0;
-        this.fps = 30
+        this.fps = 30;
         this.intervalId = null;
         this.isRunning = false;
-        this.timerElement = document.getElementById('timer')
+        this.startTime = null;
+
+        // let _grid = [
+        //     [0, 0, 0, 0],
+        //     [0, 0, 0, 0],
+        //     [0, 0, 0, 0]
+        // ];
+        // let _nbLines   = _grid.length;
+        // let _nbColumns = _grid[0].length;
+        // let _cellSize  = 100;
     }
 
-    getIsRunning(){
-        return this.isRunning;
-    }
-    setIsRunning(value){
-        this.isRunning = value;
-    }
-
-    updateView() {
-        this.timerElement.textContent = Math.floor(this.ms / 60000).toString().padStart(2, '0') + ":" + Math.floor((this.ms % 60000) / 1000).toString().padStart(2, '0');
+    startChrono(){
+        this.startTime = new Date().getTime() - this.ms;
+        this.isRunning = true;
     }
     
+    stopChrono(){
+        this.ms = new Date().getTime() - this.startTime;
+        this.isRunning = false;
+    }
+
     tick() {
-        this.ms += 1000/30;
-        this.updateView();
+        if(this.isRunning){
+            this.ms = new Date().getTime() - this.startTime;
+        }
     }
 }

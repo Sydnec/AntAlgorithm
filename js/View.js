@@ -52,7 +52,7 @@ export class View {
 					this.cellSize
 				);
 
-				if (cellType === 'free' && this.showPheromones) {
+				if ((cellType === 'free' || cellType === 'objective')&& this.showPheromones) {
 					const pheromoneQty = maze.cells[x][y].getQty().toFixed(2);
 					const fontSize = 18;
 					// Calcule la position centrale de la cellule
@@ -63,7 +63,7 @@ export class View {
 					const textY =
 						y * this.cellSize + this.cellSize / 2 + fontSize / 2;
 
-					// Met en couleur le resultat en fonction de pheromoneQty (0 = Jaune, 1 = Rouge)
+					// Met en couleur le resultat en fonction de pheromoneQty (0 = Rouge, 1 = Vert)
 					const color = this.getColorForPheromoneQty(pheromoneQty);
 					this.ctx.fillStyle = color;
 
@@ -86,7 +86,6 @@ export class View {
 	}
 
 	getColorForPheromoneQty(pheromoneQty) {
-		if (pheromoneQty == 0) return `rgb(255,255,255)`;
 		return `rgb(${Math.max(
 			510 - Math.floor(510 * pheromoneQty),
 			0

@@ -8,6 +8,7 @@ export class Maze {
 		this.cellsBySide = cellsBySide;
 		this.cells = [];
 		this.luckOfFreeCell = 1;
+		this.startCell = {}
 		this.numberOfObjective =
 			1 + Math.round(Math.random() * (cellsBySide / 10));
 		this.directions = [
@@ -39,13 +40,13 @@ export class Maze {
 		const startY = Math.floor(
 			this.cellsBySide / 3 + (Math.random() * this.cellsBySide) / 3
 		);
-		const startCell = new Start(startX, startY);
+		this.startCell = new Start(startX, startY);
 
 		// Part du point de départ pour générer le chemin libre de manière récursive
-		this.cells[startX][startY] = startCell;
+		this.cells[startX][startY] = this.startCell;
 		for (const [dx, dy] of this.directions) {
-			const newX = startCell.x + dx;
-			const newY = startCell.y + dy;
+			const newX = this.startCell.x + dx;
+			const newY = this.startCell.y + dy;
 			const newCell = new Free(newX, newY);
 			this.cells[newX][newY] = newCell;
 			this.createMazeRecursive(newCell);

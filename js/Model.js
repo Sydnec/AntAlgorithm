@@ -1,4 +1,5 @@
 import { Maze } from '../modules/Maze.js';
+import { Ant } from '../modules/Ant.js';
 
 export class Model {
 	constructor() {
@@ -9,6 +10,7 @@ export class Model {
 		this.startTime = null;
 
 		this.myMaze = new Maze(20);
+		this.myAnt = new Ant(this.myMaze.startCell.x+1, this.myMaze.startCell.y);
 	}
 
 	startChrono() {

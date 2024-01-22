@@ -24,6 +24,7 @@ class Controller {
 
 		Promise.all(this.view.imagePromises).then(() => {
 			this.view.renderMaze(this.model.myMaze);
+			this.view.renderAnt(this.model.myAnt.x, this.model.myAnt.y);
 		});
 	}
 

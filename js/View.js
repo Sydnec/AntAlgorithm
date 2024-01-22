@@ -65,7 +65,7 @@ export class View {
 
 	getColorForPheromoneQty(pheromoneQty) {
 		if (pheromoneQty == 0) return `rgb(255,255,255)`;
-		return `rgb(255,${255 - Math.floor(255 * pheromoneQty)},0)`;
+		return `rgb(${Math.max(510 - Math.floor(510 * pheromoneQty), 0)},${Math.min(Math.floor(510 * pheromoneQty), 255)},0)`;
 	}
 
 	updateTimer(ms) {

@@ -16,9 +16,8 @@ export class Ant {
 	}
 
 	move(maze) {
-		let possibleCells = maze.getValidNeighbors(this.cell);
 		// Déplacement
-		this.cell = this.chooseBestCell(possibleCells);
+		this.cell = this.chooseBestCell(maze);
 		// Comportement sur la case
 		if (this.cell.getType() === 'Objective') {
 			this.foodFound = true;
@@ -31,18 +30,11 @@ export class Ant {
 		this.display();
 	}
 
-	chooseBestCell(possibleCells) {
+	chooseBestCell(maze) {
+		let possibleCells = maze.getValidNeighbors(this.cell);
 		if (this.foodFound) {
 			// Chemin Retour
-			// let cell = this.memory.pop();
-			// this.x = cell.x;
-			// this.y = cell.y;
-			// if (cell.getType() === 'Start') {
-			// 	this.foodFound = false;
-			// 	this.memory = [];
-			// } else {
-			// 	cell.setQty(cell.getQty() + 0.1);
-			// }
+			let shortestPath = findShortestPath(maze);
 		} else {
 			// Chemin aller
 			let sum = 0;
@@ -96,6 +88,40 @@ export class Ant {
 		}
 	}
 
+	findShortestPath(maze) {
+		let memory = this.memory
+		let targetCell = this.memory[0]
+		let startCell = this.cell
+		let openSet = [startCell];
+		let cameFrom = {};
+	
+		while (openSet.length > 0) {
+			let currentCell = openSet.shift();// Retirez la cellule avec le coût le plus bas de openSet
+	
+			if (currentCell === targetCell) {
+				// Vous avez trouvé le chemin, reconstruisez-le à l'aide de cameFrom
+				let path = [];
+				while (currentCell) {
+					path.unshift(currentCell);
+					currentCell = cameFrom[currentCell];
+				}
+				return path;
+			}
+	
+			let neighbors = maze.getValidNeighbors()// Obtenez les voisins valides de currentCell dans memory
+	
+			for (let neighbor of neighbors) {
+				if (!openSet.includes(neighbor)) {
+					openSet.push(neighbor);
+					cameFrom[neighbor] = currentCell;
+				}
+			}
+		}
+	
+		// Si la liste est vide et que vous n'avez pas trouvé le chemin, retournez null ou un indicateur approprié.
+		return null;
+	}	
+	
 	probaDiscover(cell) {
 		let gamma = 0.5;
 		let qty = cell.getType() === 'Start' ? 0 : cell.getQty();

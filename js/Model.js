@@ -4,13 +4,13 @@ import { Ant } from '../modules/Ant.js';
 export class Model {
 	constructor() {
 		this.ms = 0;
-		this.fps = 30;
+		this.fps = 15;
 		this.intervalId = null;
 		this.isRunning = false;
 		this.startTime = null;
 
 		this.myMaze = new Maze(20);
-		this.myAnt = new Ant(this.myMaze.startCell.x, this.myMaze.startCell.y);
+		this.myAnts = Array.from({ length: 1 }, () => new Ant(this.myMaze.startCell.x, this.myMaze.startCell.y));
 	}
 
 	startChrono() {
@@ -26,6 +26,9 @@ export class Model {
 	tick() {
 		if (this.isRunning) {
 			this.ms = new Date().getTime() - this.startTime;
+			this.myAnts.forEach(ant => {
+				ant.move(this.myMaze)
+			});
 		}
 	}
 }

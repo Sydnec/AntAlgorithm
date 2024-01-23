@@ -8,6 +8,7 @@ export class View {
 		this.pheromonesButton.style.backgroundColor = '#888888';
 		this.timerElement = document.getElementById('timer');
 		this.canvas = document.getElementById('maze');
+		this.ctx = this.canvas.getContext('2d');
 
 		// Préchargement des images
 		this.imageCache = {};
@@ -18,7 +19,6 @@ export class View {
 			'objective',
 			'ant',
 		]);
-		this.ctx = this.canvas.getContext('2d');
 	}
 
 	preloadImages(types) {
@@ -74,21 +74,10 @@ export class View {
 		}
 	}
 
-	renderAnt(x, y) {
-		const img = this.imageCache['ant'];
-		this.ctx.drawImage(
-			img,
-			x * this.cellSize,
-			y * this.cellSize,
-			this.cellSize,
-			this.cellSize
-		);
-	}
-
 	getColorForPheromoneQty(pheromoneQty) {
-		return `rgb(${Math.max(
+		return `rgb(${Math.min(
 			510 - Math.floor(510 * pheromoneQty),
-			0
+			255
 		)},${Math.min(Math.floor(510 * pheromoneQty), 255)},0)`;
 	}
 

@@ -139,6 +139,21 @@ export class Maze {
 		return neighbors;
 	}
 
+	getValidNeighbors(x, y) {
+		const neighbors = [];
+
+		for (const [dx, dy] of this.directions) {
+			const newX = x + dx;
+			const newY = y + dy;
+
+			if (this.isValidPosition(newX, newY) && this.cells[newX][newY].getType() !== 'Obstacle') {
+				neighbors.push(this.cells[newX][newY]);
+			}
+		}
+
+		return neighbors;
+	}
+
 	// Vérifie que la position soit valide
 	isValidPosition(x, y) {
 		return x >= 0 && x < this.cellsBySide && y >= 0 && y < this.cellsBySide;

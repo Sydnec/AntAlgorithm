@@ -24,7 +24,6 @@ class Controller {
 
 		Promise.all(this.view.imagePromises).then(() => {
 			this.view.renderMaze(this.model.myMaze);
-			this.view.renderAnt(this.model.myAnt.x, this.model.myAnt.y);
 		});
 	}
 
@@ -36,7 +35,6 @@ class Controller {
 		}
 		this.view.showPheromones = !this.view.showPheromones;
 		this.view.renderMaze(this.model.myMaze);
-		this.view.renderAnt(this.model.myAnt.x, this.model.myAnt.y);
 	}
 
 	toggleTimerButton() {
@@ -48,10 +46,9 @@ class Controller {
 		} else {
 			this.model.startChrono();
 			this.model.intervalId = setInterval(() => {
+				this.view.renderMaze(this.model.myMaze);
 				this.model.tick();
 				this.view.updateTimer(this.model.ms);
-				this.view.renderMaze(this.model.myMaze);
-				this.view.renderAnt(this.model.myAnt.x, this.model.myAnt.y);
 			}, 1000 / this.model.fps);
 			this.view.displayStopButton();
 		}

@@ -19,8 +19,6 @@ export class Maze {
 		];
 
 		this.generateMaze();
-		this.fillWithObstacle();
-		this.addObjectives();
 	}
 
 	generateMaze() {
@@ -51,6 +49,9 @@ export class Maze {
 			this.cells[newX][newY] = newCell;
 			this.createMazeRecursive(newCell);
 		}
+
+		this.fillWithObstacle();
+		this.addObjectives();
 	}
 
 	// Génère des objectifs sur des cases Free est situé sur l'intervale [0; 1/3]U[2/3; 1] *
@@ -123,28 +124,13 @@ export class Maze {
 		}
 	}
 
-	// Récupère les cases voisines pas encore générées
-	getUnvisitedNeighbors(cell) {
+	// Retourne les cellules adjacentes qui ne sont pas des obstacles
+	getValidNeighbors(cell) {
 		const neighbors = [];
 
 		for (const [dx, dy] of this.directions) {
 			const newX = cell.x + dx;
 			const newY = cell.y + dy;
-
-			if (this.isValidPosition(newX, newY) && !this.cells[newX][newY]) {
-				neighbors.push([dx, dy]);
-			}
-		}
-
-		return neighbors;
-	}
-
-	getValidNeighbors(x, y) {
-		const neighbors = [];
-
-		for (const [dx, dy] of this.directions) {
-			const newX = x + dx;
-			const newY = y + dy;
 
 			if (this.isValidPosition(newX, newY) && this.cells[newX][newY].getType() !== 'Obstacle') {
 				neighbors.push(this.cells[newX][newY]);
@@ -155,7 +141,6 @@ export class Maze {
 	}
 
 	// Vérifie que la position soit valide
-	//HELLO
 	isValidPosition(x, y) {
 		return x >= 0 && x < this.cellsBySide && y >= 0 && y < this.cellsBySide;
 	}

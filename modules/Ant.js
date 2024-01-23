@@ -1,9 +1,8 @@
 export class Ant {
-	constructor(x, y) {
+	constructor(cell) {
 		this.cellSize = 64;
-		this.x = x;
-		this.y = y;
-		this.memory = [];
+		this.cell = cell;
+		this.memory = [cell];
 
 		this.foodFound = false;
 
@@ -17,56 +16,97 @@ export class Ant {
 	}
 
 	move(maze) {
-		if (this.foodFound) {
-			let cell = this.memory.pop();
-			console.log(cell)
-			this.x = cell.x;
-			this.y = cell.y;
-			if (maze.cells[this.x][this.y].getType() === 'Start') {
-				this.foodFound = false;
-				this.memory = [];
-			} else {
-				maze.cells[this.x][this.y].setQty(maze.cells[this.x][this.y].getQty() + 0.1);
-			}
+		let possibleCells = maze.getValidNeighbors(this.cell);
+		// Déplacement
+		this.cell = this.chooseBestCell(possibleCells);
+		// Comportement sur la case
+		if (this.cell.getType() === 'Objective') {
+			this.foodFound = true;
+			this.cell.setQty(this.cell.getQty() - 0.1);
+		} else if (this.cell.getType() === 'Start') {
+			this.memory = [this.cell];
 		} else {
-			let newCells = maze.getValidNeighbors(this.x, this.y);
-			let newCell = newCells[Math.floor(Math.random() * newCells.length)];
-			while(this.memory[this.memory.length-2] === newCell){
-				newCell = newCells[Math.floor(Math.random() * newCells.length)];
+			this.memory.push(this.cell);
+		}
+		this.display();
+	}
+
+	chooseBestCell(possibleCells) {
+		if (this.foodFound) {
+			// Chemin Retour
+			// let cell = this.memory.pop();
+			// this.x = cell.x;
+			// this.y = cell.y;
+			// if (cell.getType() === 'Start') {
+			// 	this.foodFound = false;
+			// 	this.memory = [];
+			// } else {
+			// 	cell.setQty(cell.getQty() + 0.1);
+			// }
+		} else {
+			// Chemin aller
+			let sum = 0;
+			for (let i = 0; i < possibleCells.length; i++) {
+				if (possibleCells[i].getType() === 'Objective')
+					return possibleCells[i];
+				sum += this.probaDiscover(possibleCells[i]);
 			}
-			newCells.forEach((cell) => {
-				if (
-					cell.getType() !== 'Start' &&
-					newCell.getType() !== 'Start' &&
-					newCell.getType() !== 'Objective'
-				) {
-					if (cell.getQty() > newCell.getQty()) {
-						newCell = cell;
+			if (
+				this.probaDiscover(possibleCells[0]) / sum ===
+				1 / possibleCells.length
+			) {
+				// Toutes les mêmes proba
+				// Priorise les cases non explorées
+				let unexploredCells = possibleCells.filter(
+					(cell) => !this.memory.includes(cell)
+				);
+				if (unexploredCells.length > 0) {
+					return unexploredCells[
+						Math.floor(Math.random() * unexploredCells.length)
+					];
+				} else {
+					let random = Math.random();
+					let currentProba = 0;
+					for (let i = 0; i < possibleCells.length; i++) {
+						if (
+							random <
+							currentProba +
+								this.probaDiscover(possibleCells[i]) / sum
+						) {
+							return possibleCells[i];
+						}
+						currentProba +=
+							this.probaDiscover(possibleCells[i]) / sum;
 					}
 				}
-			});
-			if (newCell.getType() === 'Objective') {
-				this.foodFound = true;
-				maze.cells[newCell.x][newCell.y].setQty(
-					maze.cells[newCell.x][newCell.y].getQty() - 0.1
-				);
-			} else if (newCell.getType() === 'Start') {
-				this.memory = [];
-				this.memory.push(newCell);
 			} else {
-				this.memory.push(newCell);
+				let random = Math.random();
+				let currentProba = 0;
+				for (let i = 0; i < possibleCells.length; i++) {
+					if (
+						random <
+						currentProba +
+							this.probaDiscover(possibleCells[i]) / sum
+					) {
+						return possibleCells[i];
+					}
+					currentProba += this.probaDiscover(possibleCells[i]) / sum;
+				}
 			}
-			this.x = newCell.x;
-			this.y = newCell.y;
-			this.display();
 		}
+	}
+
+	probaDiscover(cell) {
+		let gamma = 0.5;
+		let qty = cell.getType() === 'Start' ? 0 : cell.getQty();
+		return gamma + qty;
 	}
 
 	display() {
 		this.ctx.drawImage(
 			this.img,
-			this.x * this.cellSize,
-			this.y * this.cellSize,
+			this.cell.x * this.cellSize,
+			this.cell.y * this.cellSize,
 			this.cellSize,
 			this.cellSize
 		);

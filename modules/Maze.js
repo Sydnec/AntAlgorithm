@@ -155,6 +155,7 @@ export class Maze {
 	}
 
 	// Vérifie que la position soit valide
+	//HELLO
 	isValidPosition(x, y) {
 		return x >= 0 && x < this.cellsBySide && y >= 0 && y < this.cellsBySide;
 	}

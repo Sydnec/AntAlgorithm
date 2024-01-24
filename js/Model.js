@@ -9,7 +9,7 @@ export class Model {
 		this.isRunning = false;
 		this.startTime = null;
 
-		this.myMaze = new Maze(25);
+		this.myMaze = new Maze(15);
 		this.myAnts = Array.from({ length: 5 }, () => new Ant(this.myMaze.startCell));
 	}
 

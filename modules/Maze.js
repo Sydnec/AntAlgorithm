@@ -113,6 +113,10 @@ export class Maze {
 		}
 	}
 
+	noMoreFood(x, y){
+		this.cells[x][y] = new Free(x, y, 0);
+	}
+
 	// Rempli d'obstacles les zones restantes
 	fillWithObstacle() {
 		for (let x = 0; x < this.cellsBySide; x++) {

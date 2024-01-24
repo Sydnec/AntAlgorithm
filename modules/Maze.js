@@ -101,7 +101,7 @@ export class Maze {
 				const random = Math.random();
 				if (random < this.luckOfFreeCell) {
 					newCell = new Free(newX, newY);
-					this.luckOfFreeCell -= 0.02;
+					this.luckOfFreeCell -= 0.05;
 					this.cells[newX][newY] = newCell;
 					this.createMazeRecursive(newCell);
 				} else {

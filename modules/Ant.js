@@ -1,7 +1,8 @@
 export class Ant {
 	constructor(cell) {
 		// Constantes
-		this.gamma = 0.01;
+		this.gamma = 0.03;
+		this.pheromonesAdded = 4;
 
 		this.cellSize = 64;
 		this.cell = cell;
@@ -30,7 +31,7 @@ export class Ant {
 			this.memory = [this.cell];
 			if (this.foodFound) {
 				this.path.forEach((cell) => {
-					cell.setQty(Math.min(cell.getQty() + (0.05 * (this.path.length - this.path.indexOf(cell))), 1))
+					cell.setQty(this.calculPheromones(cell.getQty()))
 				});
 			}
 			this.path = []
@@ -43,6 +44,15 @@ export class Ant {
 			}
 		}
 		this.display();
+	}
+
+	calculPheromones(qty){
+		let xStart = this.path[0].x 
+		let yStart = this.path[0].y
+		let xEnd = this.memory[0].x
+		let yEnd = this.memory[0].y
+		let absoluteLength = Math.sqrt((xEnd - xStart)*(xEnd - xStart) + (yEnd - yStart)*(yEnd - yStart))
+		return Math.min(qty + this.pheromonesAdded * absoluteLength / this.path.length, 1)
 	}
 
 	chooseBestCell(maze) {

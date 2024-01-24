@@ -4,12 +4,12 @@ import { Ant } from '../modules/Ant.js';
 export class Model {
 	constructor() {
 		this.ms = 0;
-		this.fps = 10;
+		this.fps = 5;
 		this.intervalId = null;
 		this.isRunning = false;
 		this.startTime = null;
 
-		this.myMaze = new Maze(15);
+		this.myMaze = new Maze(25);
 		this.myAnts = Array.from({ length: 5 }, () => new Ant(this.myMaze.startCell));
 	}
 
@@ -37,7 +37,7 @@ export class Model {
 		this.myMaze.cells.forEach(line => {
 			line.forEach(cell => {
 				if(cell.getType() === "Free"){
-					cell.setQty(Math.max(cell.getQty() - 0.01, 0))
+					cell.setQty(Math.max(cell.getQty() * 0.98, 0))
 				}
 			});
 		});

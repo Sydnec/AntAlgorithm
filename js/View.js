@@ -1,11 +1,11 @@
 export class View {
 	constructor() {
 		this.cellSize = 64;
-		this.showPheromones = false;
+		this.graphicalPheromones = true;
 		this.timerButton = document.getElementById('timerButton');
 		this.timerButton.style.backgroundColor = '#4caf50';
 		this.pheromonesButton = document.getElementById('pheromonesButton');
-		this.pheromonesButton.style.backgroundColor = '#888888';
+		this.pheromonesButton.style.backgroundColor = '#4caf50';
 		this.timerElement = document.getElementById('timer');
 		this.canvas = document.getElementById('maze');
 		this.ctx = this.canvas.getContext('2d');
@@ -17,7 +17,6 @@ export class View {
 			'obstacle',
 			'start',
 			'objective',
-			'ant',
 		]);
 	}
 
@@ -52,23 +51,42 @@ export class View {
 					this.cellSize
 				);
 
-				if ((cellType === 'free' || cellType === 'objective')&& this.showPheromones) {
+				if (cellType === 'free') {
 					const pheromoneQty = maze.cells[x][y].getQty().toFixed(2);
-					const fontSize = 18;
-					// Calcule la position centrale de la cellule
-					const textX =
-						x * this.cellSize +
-						this.cellSize / 2 -
-						this.ctx.measureText(pheromoneQty).width / 2;
-					const textY =
-						y * this.cellSize + this.cellSize / 2 + fontSize / 2;
-
 					// Met en couleur le resultat en fonction de pheromoneQty (0 = Rouge, 1 = Vert)
 					const color = this.getColorForPheromoneQty(pheromoneQty);
-					this.ctx.fillStyle = color;
+					if (this.graphicalPheromones) {
+						const circleRadius = pheromoneQty * this.cellSize / 2.2;
+						// Calcule la position centrale de la cellule
+						const circleX = x * this.cellSize + this.cellSize / 2;
+						const circleY = y * this.cellSize + this.cellSize / 2;
 
-					this.ctx.font = `${fontSize}px Arial`;
-					this.ctx.fillText(pheromoneQty, textX, textY);
+						this.ctx.beginPath();
+						this.ctx.arc(
+							circleX,
+							circleY,
+							circleRadius,
+							0,
+							2 * Math.PI
+						);
+						this.ctx.fillStyle = color;
+						this.ctx.fill();
+					} else {
+						const fontSize = 18;
+						// Calcule la position centrale de la cellule
+						const textX =
+							x * this.cellSize +
+							this.cellSize / 2 -
+							this.ctx.measureText(pheromoneQty).width / 2;
+						const textY =
+							y * this.cellSize +
+							this.cellSize / 2 +
+							fontSize / 2;
+
+						this.ctx.fillStyle = color;
+						this.ctx.font = `${fontSize}px Arial`;
+						this.ctx.fillText(pheromoneQty, textX, textY);
+					}
 				}
 			}
 		}

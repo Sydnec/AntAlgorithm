@@ -28,12 +28,12 @@ class Controller {
 	}
 
 	togglePheromonesButton() {
-		if (this.view.showPheromones) {
+		if (this.view.graphicalPheromones) {
 			this.view.pheromonesButton.style.backgroundColor = '#888888';
 		} else {
 			this.view.pheromonesButton.style.backgroundColor = '#4caf50';
 		}
-		this.view.showPheromones = !this.view.showPheromones;
+		this.view.graphicalPheromones = !this.view.graphicalPheromones;
 		this.view.renderMaze(this.model.myMaze);
 	}
 

@@ -4,12 +4,12 @@ import { Ant } from '../modules/Ant.js';
 export class Model {
 	constructor() {
 		this.ms = 0;
-		this.fps = 20;
+		this.fps = 10;
 		this.intervalId = null;
 		this.isRunning = false;
 		this.startTime = null;
 
-		this.myMaze = new Maze(20);
+		this.myMaze = new Maze(15);
 		this.myAnts = Array.from({ length: 5 }, () => new Ant(this.myMaze.startCell));
 	}
 

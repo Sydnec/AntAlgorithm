@@ -1,5 +1,8 @@
 export class Ant {
 	constructor(cell) {
+		// Constantes
+		this.gamma = 0.01;
+
 		this.cellSize = 64;
 		this.cell = cell;
 		this.memory = [cell];
@@ -27,7 +30,7 @@ export class Ant {
 			this.memory = [this.cell];
 			if (this.foodFound) {
 				this.path.forEach((cell) => {
-					cell.setQty(Math.min(cell.getQty() + (0.03 * (this.path.length - this.path.indexOf(cell))), 1))
+					cell.setQty(Math.min(cell.getQty() + (0.05 * (this.path.length - this.path.indexOf(cell))), 1))
 				});
 			}
 			this.path = []
@@ -111,9 +114,8 @@ export class Ant {
 	}
 
 	probaDiscover(cell) {
-		let gamma = 0.0001;
 		let qty = cell.getType() === 'Start' ? 0 : cell.getQty();
-		return gamma + qty;
+		return this.gamma + qty;
 	}
 
 	display() {

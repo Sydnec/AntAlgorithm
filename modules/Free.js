@@ -5,12 +5,4 @@ export class Free extends Cell {
 		super(x, y);
 		this._qty = qty;
 	}
-
-	getQty() {
-		return this._qty;
-	}
-
-	setQty(newValue) {
-		this._qty = newValue;
-	}
 }

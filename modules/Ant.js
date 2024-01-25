@@ -26,15 +26,15 @@ export class Ant {
 		if (this.cell.getType() === 'Objective') {
 			this.foodFound = true;
 			this.path = [this.cell];
-			this.cell.setQty(this.cell.getQty() - 0.1);
-			if (this.cell.getQty() <= 0)
+			this.cell._qty = this.cell._qty - 0.1;
+			if (this.cell._qty <= 0)
 				maze.noMoreFood(this.cell.x, this.cell.y);
 		} else if (this.cell.getType() === 'Start') {
 			this.memory = [this.cell];
 			if (this.foodFound) {
 				this.path.forEach((cell) => {
 					if (cell.getType() === 'Objective') return;
-					cell.setQty(this.calculPheromones(cell));
+					cell._qty = this.calculPheromones(cell);
 				});
 			}
 			this.path = [];
@@ -50,7 +50,7 @@ export class Ant {
 	}
 
 	calculPheromones(cell) {
-		let qty = cell.getQty();
+		let qty = cell._qty;
 		let xStart = this.path[0].x;
 		let yStart = this.path[0].y;
 		let xEnd = this.memory[0].x;
@@ -135,7 +135,7 @@ export class Ant {
 	}
 
 	probaDiscover(cell) {
-		let qty = cell.getType() === 'Start' ? 0 : cell.getQty();
+		let qty = cell.getType() === 'Start' ? 0 : cell._qty;
 		return this.gamma + qty;
 	}
 

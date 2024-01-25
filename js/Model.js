@@ -4,9 +4,9 @@ import { Ant } from '../modules/Ant.js';
 export class Model {
 	constructor() {
 		this.intervalId = null;
-		this.gameFps = 7;
+		this.gameFps = 10;
 		this.travelingFood = false
-		this.pheromonesDecreasingSpeed = 2
+		this.pheromonesDecreasingSpeed = 1.8
 
 		this.isRunning = false;
 		this.ms = 0;
@@ -47,7 +47,7 @@ export class Model {
 		this.myMaze.cells.forEach(line => {
 			line.forEach(cell => {
 				if(cell.getType() === "Free"){
-					cell.setQty(Math.max(cell.getQty() * (1 - this.pheromonesDecreasingSpeed/100), 0))
+					cell._qty = Math.max(cell._qty * (1 - this.pheromonesDecreasingSpeed/100), 0)
 				}
 			});
 		});

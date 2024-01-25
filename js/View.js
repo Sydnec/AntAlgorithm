@@ -52,7 +52,7 @@ export class View {
 				);
 
 				if (cellType === 'free') {
-					const pheromoneQty = maze.cells[x][y].getQty().toFixed(2);
+					const pheromoneQty = maze.cells[x][y]._qty.toFixed(2);
 					// Met en couleur le resultat en fonction de pheromoneQty (0 = Rouge, 1 = Vert)
 					const color = this.getColorForPheromoneQty(pheromoneQty);
 					if (this.graphicalPheromones) {

@@ -8,7 +8,7 @@ export class Maze {
 		this.cellsBySide = cellsBySide;
 		this.cells = [];
 		this.luckOfFreeCell = 1;
-		this.startCell = {}
+		this.startCell = {};
 		this.numberOfObjective =
 			1 + Math.round(Math.random() * (cellsBySide / 10));
 		this.directions = [
@@ -56,7 +56,7 @@ export class Maze {
 
 	// Génère des objectifs sur des cases Free est situé sur l'intervale [0; 1/3]U[2/3; 1] *
 	addObjectives() {
-		while (this.numberOfObjective > 0) {
+		for (let i = 0; i < this.numberOfObjective; i++) {
 			let cellX =
 				Math.random() < 0.5
 					? Math.floor(((Math.random() * 1) / 3) * this.cellsBySide)
@@ -73,7 +73,8 @@ export class Maze {
 					  );
 			if (this.cells[cellX][cellY].getType() === 'Free') {
 				this.cells[cellX][cellY] = new Objective(cellX, cellY);
-				this.numberOfObjective -= 1;
+			}else{
+				i -= 1;
 			}
 		}
 	}
@@ -113,8 +114,9 @@ export class Maze {
 		}
 	}
 
-	noMoreFood(x, y){
+	noMoreFood(x, y) {
 		this.cells[x][y] = new Free(x, y, 0);
+		this.numberOfObjective -= 1;
 	}
 
 	// Rempli d'obstacles les zones restantes
@@ -136,7 +138,10 @@ export class Maze {
 			const newX = cell.x + dx;
 			const newY = cell.y + dy;
 
-			if (this.isValidPosition(newX, newY) && this.cells[newX][newY].getType() !== 'Obstacle') {
+			if (
+				this.isValidPosition(newX, newY) &&
+				this.cells[newX][newY].getType() !== 'Obstacle'
+			) {
 				neighbors.push(this.cells[newX][newY]);
 			}
 		}

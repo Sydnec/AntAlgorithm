@@ -3,10 +3,15 @@ import { Ant } from '../modules/Ant.js';
 
 export class Model {
 	constructor() {
-		this.ms = 0;
-		this.fps = 5;
 		this.intervalId = null;
+		this.gameFps = 7;
+		this.travelingFood = false
+		this.pheromonesDecreasingSpeed = 2
+
 		this.isRunning = false;
+		this.ms = 0;
+		this.timerIntervalId = null;
+		this.timerFps = 60;
 		this.startTime = null;
 
 		this.myMaze = new Maze(15);
@@ -23,12 +28,17 @@ export class Model {
 		this.isRunning = false;
 	}
 
+	timerTick(){
+		this.ms = new Date().getTime() - this.startTime;
+	}
+
 	tick() {
 		if (this.isRunning) {
-			this.ms = new Date().getTime() - this.startTime;
+			this.travelingFood = false
 			this.decreasePheromones()
 			this.myAnts.forEach(ant => {
 				ant.move(this.myMaze)
+				if(ant.foodFound === true) this.travelingFood = true
 			});
 		}
 	}
@@ -37,7 +47,7 @@ export class Model {
 		this.myMaze.cells.forEach(line => {
 			line.forEach(cell => {
 				if(cell.getType() === "Free"){
-					cell.setQty(Math.max(cell.getQty() * 0.98, 0))
+					cell.setQty(Math.max(cell.getQty() * (1 - this.pheromonesDecreasingSpeed/100), 0))
 				}
 			});
 		});

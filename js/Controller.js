@@ -14,9 +14,9 @@ class Controller {
 		);
 		window.addEventListener(
 			'keydown',
-			(event, button = this.view.timerButton) => {
+			(event) => {
 				if (event.key === ' ') {
-					button.click();
+					this.view.timerButton.click();
 				}
 			},
 			true
@@ -40,6 +40,7 @@ class Controller {
 	toggleTimerButton() {
 		if (this.model.isRunning) {
 			clearInterval(this.model.intervalId);
+			clearInterval(this.model.timerIntervalId);
 			this.model.stopChrono();
 			this.view.updateTimer(this.model.ms);
 			this.view.displayStartButton();
@@ -48,8 +49,14 @@ class Controller {
 			this.model.intervalId = setInterval(() => {
 				this.view.renderMaze(this.model.myMaze);
 				this.model.tick();
+				if(this.model.myMaze.numberOfObjective <= 0 && this.model.travelingFood === false){
+					this.view.timerButton.click()
+				} 
+			}, 1000 / this.model.gameFps);
+			this.model.timerIntervalId = setInterval(() => {
+				this.model.timerTick()
 				this.view.updateTimer(this.model.ms);
-			}, 1000 / this.model.fps);
+			}, 1000 / this.model.timerFps);
 			this.view.displayStopButton();
 		}
 	}

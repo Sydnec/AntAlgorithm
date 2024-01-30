@@ -5,8 +5,8 @@ export class Model {
 	constructor() {
 		this.intervalId = null;
 		this.gameFps = 10;
-		this.travelingFood = false
-		this.pheromonesDecreasingSpeed = 1.8
+		this.travelingFood = false;
+		this.pheromonesDecreasingSpeed = 1.5;
 
 		this.isRunning = false;
 		this.ms = 0;
@@ -14,8 +14,11 @@ export class Model {
 		this.timerFps = 60;
 		this.startTime = null;
 
-		this.myMaze = new Maze(15);
-		this.myAnts = Array.from({ length: 5 }, () => new Ant(this.myMaze.startCell));
+		this.myMaze = new Maze(14);
+		this.myAnts = Array.from(
+			{ length: 5 },
+			() => new Ant(this.myMaze.startCell)
+		);
 	}
 
 	startChrono() {
@@ -28,28 +31,34 @@ export class Model {
 		this.isRunning = false;
 	}
 
-	timerTick(){
+	timerTick() {
 		this.ms = new Date().getTime() - this.startTime;
 	}
 
 	tick() {
 		if (this.isRunning) {
-			this.travelingFood = false
-			this.decreasePheromones()
-			this.myAnts.forEach(ant => {
-				ant.move(this.myMaze)
-				if(ant.foodFound === true) this.travelingFood = true
+			this.travelingFood = false;
+			this.decreasePheromones();
+			this.myAnts.forEach((ant) => {
+				ant.move(this.myMaze);
+				if (ant.foodFound === true) this.travelingFood = true;
 			});
 		}
 	}
 
-	decreasePheromones(){
-		this.myMaze.cells.forEach(line => {
-			line.forEach(cell => {
-				if(cell.getType() === "Free"){
-					cell._qty = Math.max(cell._qty * (1 - this.pheromonesDecreasingSpeed/100), 0)
+	decreasePheromones() {
+		this.myMaze.cells.forEach((line) => {
+			line.forEach((cell) => {
+				if (cell.getType() === 'Free') {
+					cell._qty = Math.max(
+						cell._qty * (1 - this.pheromonesDecreasingSpeed / 100),
+						0
+					);
 				}
 			});
 		});
+		this.myMaze.maxPheromones =
+			this.myMaze.maxPheromones *
+			(1 - this.pheromonesDecreasingSpeed / 100);
 	}
 }

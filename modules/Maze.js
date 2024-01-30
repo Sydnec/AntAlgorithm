@@ -17,6 +17,7 @@ export class Maze {
 			[0, 1],
 			[0, -1],
 		];
+		this.maxPheromones = 0.0;
 
 		this.generateMaze();
 	}

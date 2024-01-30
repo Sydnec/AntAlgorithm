@@ -12,12 +12,14 @@ export class View {
 
 		// Préchargement des images
 		this.imageCache = {};
-		this.imagePromises = this.preloadImages([
-			'free',
-			'obstacle',
-			'start',
-			'objective',
-		]);
+		let imagesToLoad = ['free',
+		'obstacle',
+		'start']
+		for (let i = 1; i <= 10; i++) {
+			imagesToLoad.push(`objective${i}`)
+			
+		}
+		this.imagePromises = this.preloadImages(imagesToLoad);
 	}
 
 	preloadImages(types) {
@@ -40,7 +42,8 @@ export class View {
 
 		for (let x = 0; x < maze.cellsBySide; x++) {
 			for (let y = 0; y < maze.cellsBySide; y++) {
-				const cellType = maze.cells[x][y].getType().toLowerCase();
+				let cellType = maze.cells[x][y].getType().toLowerCase();
+				if(cellType === 'objective') cellType += maze.cells[x][y]._qty
 				const img = this.imageCache[cellType];
 
 				this.ctx.drawImage(
@@ -54,9 +57,12 @@ export class View {
 				if (cellType === 'free') {
 					const pheromoneQty = maze.cells[x][y]._qty.toFixed(2);
 					// Met en couleur le resultat en fonction de pheromoneQty (0 = Rouge, 1 = Vert)
-					const color = this.getColorForPheromoneQty(pheromoneQty);
 					if (this.graphicalPheromones) {
-						const circleRadius = pheromoneQty * this.cellSize / 2.2;
+						const pheromoneRatio = Math.min(pheromoneQty / maze.maxPheromones, 1);
+						const color = this.getColorForPheromoneQty(pheromoneRatio);
+
+						const circleRadius = pheromoneRatio * this.cellSize / 2.2;
+						
 						// Calcule la position centrale de la cellule
 						const circleX = x * this.cellSize + this.cellSize / 2;
 						const circleY = y * this.cellSize + this.cellSize / 2;
@@ -72,6 +78,7 @@ export class View {
 						this.ctx.fillStyle = color;
 						this.ctx.fill();
 					} else {
+						const color = this.getColorForPheromoneQty(pheromoneQty);
 						const fontSize = 18;
 						// Calcule la position centrale de la cellule
 						const textX =

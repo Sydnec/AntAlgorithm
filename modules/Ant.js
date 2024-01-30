@@ -1,8 +1,8 @@
 export class Ant {
 	constructor(cell) {
 		// Constantes
-		this.gamma = 0.05;
-		this.pheromonesAdded = 0.5;
+		this.gamma = 0.3;
+		this.pheromonesAdded = 1;
 
 		this.cellSize = 64;
 		this.cell = cell;
@@ -26,15 +26,17 @@ export class Ant {
 		if (this.cell.getType() === 'Objective') {
 			this.foodFound = true;
 			this.path = [this.cell];
-			this.cell._qty = this.cell._qty - 0.1;
-			if (this.cell._qty <= 0)
-				maze.noMoreFood(this.cell.x, this.cell.y);
+			this.cell._qty = this.cell._qty - 1;
+			if (this.cell._qty <= 0) maze.noMoreFood(this.cell.x, this.cell.y);
 		} else if (this.cell.getType() === 'Start') {
 			this.memory = [this.cell];
 			if (this.foodFound) {
 				this.path.forEach((cell) => {
 					if (cell.getType() === 'Objective') return;
 					cell._qty = this.calculPheromones(cell);
+					if (cell._qty > maze.maxPheromones) {
+						maze.maxPheromones = cell._qty;
+					}
 				});
 			}
 			this.path = [];
@@ -57,12 +59,10 @@ export class Ant {
 		let yEnd = this.memory[0].y;
 		let absoluteMinimumLength =
 			Math.abs(xEnd - xStart) + Math.abs(yEnd - yStart);
-		return Math.min(
+		return (
 			qty +
-				this.pheromonesAdded *
-					(absoluteMinimumLength / this.path.length) +
-				(1 / this.path.indexOf(cell)) * 0.1,
-			1
+			this.pheromonesAdded * (absoluteMinimumLength / this.path.length) * (absoluteMinimumLength / this.path.length) +
+			(1 / this.path.indexOf(cell))
 		);
 	}
 

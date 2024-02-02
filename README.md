@@ -39,27 +39,37 @@ Le fichier HTML (index.html) est le point d'entrée principal de l'application. 
 
 ## Arborescence
 
-    AntAlgorithm
-    |-- css
-    |   |-- style.css
-    |-- images
-    |   |-- free.png
-    |   |-- obstacle.png
-    |   |-- start.png
-    |   |-- objective.png
-    |   |-- ant.png
-    |-- js
-    |   |-- Controller.js
-    |   |-- Model.js
-    |   |-- View.js
-    |-- modules
-    |   |-- Ant.js
-    |   |-- Cell.js
-    |   |-- Free.js
-    |   |-- Maze.js
-    |   |-- Obstacle.js
-    |   |-- Objective.js
-    |   |-- Start.js
-    |-- index.html
-
+    .
+    ├── README.md
+    ├── index.html
+    ├── css
+    │   └── style.css
+    ├── images
+    │   ├── ant.png
+    │   ├── free.png
+    │   ├── objective1.png
+    │   ├── objective10.png
+    │   ├── objective2.png
+    │   ├── objective3.png
+    │   ├── objective4.png
+    │   ├── objective5.png
+    │   ├── objective6.png
+    │   ├── objective7.png
+    │   ├── objective8.png
+    │   ├── objective9.png
+    │   ├── obstacle.png
+    │   └── start.png
+    ├── js
+    │   ├── Controller.js
+    │   ├── Model.js
+    │   └── View.js
+    └── modules
+        ├── Ant.js
+        ├── Cell.js
+        ├── Free.js
+        ├── Maze.js
+        ├── Objective.js
+        ├── Obstacle.js
+        └── Start.js
+        
 N'hésitez pas à explorer le code et à expérimenter avec différents paramètres pour observer le comportement de l'algorithme des fourmis dans le labyrinthe.

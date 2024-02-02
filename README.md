@@ -46,7 +46,7 @@ AntAlgorithm est une simulation du comportement des fourmis utilisant des phéro
 
 Le fichier CSS (css/style.css) contient les styles pour les éléments HTML du projet. 
 
-JavaScript
+## JavaScript
 ### Controller (js/Controller.js)
 
 La classe Controller est responsable de la gestion de l'interaction entre le modèle (Model) et la vue (View). Elle gère les entrées utilisateur, telles que les clics sur les boutons, et met à jour la vue en conséquence. Le Controller initialise des instances du modèle et de la vue, et établit des écouteurs d'événements pour les clics sur les boutons et les événements clavier. La simulation démarre lorsque le bouton "Start" est cliqué ou que la barre espace est pressée, et les fourmis naviguent dans le labyrinthe.

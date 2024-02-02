@@ -2,7 +2,7 @@ export class Ant {
 	constructor(cell) {
 		// Constantes
 		this.gamma = 0.3;
-		this.pheromonesAdded = 0.3;
+		this.pheromonesAdded = 0.8;
 
 		this.cellSize = 64;
 		this.cell = cell;
@@ -62,7 +62,7 @@ export class Ant {
 		return (
 			qty +
 			this.pheromonesAdded * (absoluteMinimumLength / this.path.length) * (absoluteMinimumLength / this.path.length) +
-			(1 / this.path.indexOf(cell))
+			(0.2 / this.path.indexOf(cell))
 		);
 	}
 

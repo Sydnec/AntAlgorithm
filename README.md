@@ -1,5 +1,4 @@
-# README
-## AntAlgorithm
+# AntAlgorithm
 
 AntAlgorithm est une simulation du comportement des fourmis utilisant des phéromones pour trouver des objectifs dans un labyrinthe. Le projet est composé de fichiers HTML, CSS et JavaScript natif organisés comme suit :
 ## CSS

@@ -32,9 +32,10 @@ La classe Maze génère le labyrinthe, plaçant des obstacles, des objectifs, et
 Le fichier HTML (index.html) est le point d'entrée principal de l'application. Il inclut les fichiers CSS et JavaScript nécessaires et définit la structure de la page web. La section d'informations (#infos) affiche le minuteur et les boutons pour contrôler la simulation, tandis que le canevas (#canvas) est utilisé pour rendre le labyrinthe.
 ## Comment exécuter
 
-    Ouvrez le fichier index.html dans un navigateur web.
-    Cliquez sur le bouton "Start" pour lancer la simulation de fourmis.
-    Optionnellement, cliquez sur le bouton "Phéromones" pour basculer la représentation graphique des phéromones.
+    Ouvrir le projet sur VSCode
+    S'assurer que l'extension LiveServer est installée
+    Lancer le serveur en appuyant sur Go Live en bas à droite
+    Ouvrir une page web sur localhost:5500 (si vous avez modifié la configuration par défaut, le serveur peut se trouver sur un autre port)
 
 
 ## Arborescence

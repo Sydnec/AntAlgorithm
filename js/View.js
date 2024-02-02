@@ -58,7 +58,7 @@ export class View {
 					const pheromoneQty = maze.cells[x][y]._qty.toFixed(2);
 					// Met en couleur le resultat en fonction de pheromoneQty (0 = Rouge, 1 = Vert)
 					if (this.graphicalPheromones) {
-						const pheromoneRatio = Math.min(pheromoneQty / maze.maxPheromones, 1);
+						const pheromoneRatio = Math.min(maze.cells[x][y].maxQty / maze.maxPheromones, 1);
 						const color = this.getColorForPheromoneQty(pheromoneRatio);
 
 						const circleRadius = pheromoneRatio * this.cellSize / 2.2;

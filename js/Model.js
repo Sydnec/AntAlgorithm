@@ -57,8 +57,5 @@ export class Model {
 				}
 			});
 		});
-		this.myMaze.maxPheromones =
-			this.myMaze.maxPheromones *
-			(1 - this.pheromonesDecreasingSpeed / 100);
 	}
 }

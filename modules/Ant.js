@@ -2,7 +2,7 @@ export class Ant {
 	constructor(cell) {
 		// Constantes
 		this.gamma = 0.3;
-		this.pheromonesAdded = 1;
+		this.pheromonesAdded = 0.3;
 
 		this.cellSize = 64;
 		this.cell = cell;
@@ -33,7 +33,7 @@ export class Ant {
 			if (this.foodFound) {
 				this.path.forEach((cell) => {
 					if (cell.getType() === 'Objective') return;
-					cell._qty = this.calculPheromones(cell);
+					cell.setQty(this.calculPheromones(cell));
 					if (cell._qty > maze.maxPheromones) {
 						maze.maxPheromones = cell._qty;
 					}
